@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Features", "Features", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamicQueries", "DynamicQueries", "{D8B9A335-6B92-4E4E-933E-B4814BB926E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApis", "WebApis", "{B0069A65-9DA7-46BA-8630-E389F8A12AD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicQueries.Entities", "DynamicQueries.Entities\DynamicQueries.Entities.csproj", "{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicQueries.BusinessObjects", "DynamicQueries.BusinessObjects\DynamicQueries.BusinessObjects.csproj", "{F8A44839-43BA-427A-8C5A-624A8A3857CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8A44839-43BA-427A-8C5A-624A8A3857CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8A44839-43BA-427A-8C5A-624A8A3857CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8A44839-43BA-427A-8C5A-624A8A3857CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8A44839-43BA-427A-8C5A-624A8A3857CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8B9A335-6B92-4E4E-933E-B4814BB926E0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{AD79A80B-3846-42DA-AF6A-DE33B9DEAFAC} = {D8B9A335-6B92-4E4E-933E-B4814BB926E0}
+		{F8A44839-43BA-427A-8C5A-624A8A3857CF} = {D8B9A335-6B92-4E4E-933E-B4814BB926E0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA6B15D0-D6D0-4396-BEAA-3877EF24A110}
+	EndGlobalSection
+EndGlobal
