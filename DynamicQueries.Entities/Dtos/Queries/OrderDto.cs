@@ -1,9 +1,8 @@
 ﻿namespace DynamicQueries.Entities.Dtos.Queries
 {
-    public class OrderDto(string fileName,
-                          string orderType)
+    public class OrderDto(string fieldName, string orderType)
     {
-        public string FileName => fileName;
+        public string FieldName => fieldName;
         public string OrderType => orderType;
     }
 }

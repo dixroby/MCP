@@ -1,0 +1,26 @@
+@DynamicQuery.WebApi_HostAddress = http://localhost:5247
+
+POST {{DynamicQuery.WebApi_HostAddress}}/query/
+Content-Type: application/json
+{
+    "datasource":"Pizzas"
+
+}
+###
+POST {{DynamicQuery.WebApi_HostAddress}}/query/
+Content-Type: application/json
+{
+    "datasource":"Pizzas",
+    "filters":[
+
+        {
+            "fieldName":"Baseprice",
+            "operation":"<",
+            "value":"100"
+        }
+    ]
+}
+
+###
+GET {{DynamicQuery.WebApi_HostAddress}}/metadata/
+Accept: application/json
