@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLM.Abstractions", "LLM.Abs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLM.Providers", "LLM.Providers\LLM.Providers.csproj", "{A4706FD1-0FA3-42AB-BC04-B328511F6141}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PlayGroudConsole", "PlayGroudConsole", "{39CAB647-5934-42CF-A859-CFD741CB7A9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaygroundConsole", "PlaygroundConsole\PlaygroundConsole.csproj", "{D985068A-71B7-4749-9579-A543674277A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,10 @@ Global
 		{A4706FD1-0FA3-42AB-BC04-B328511F6141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4706FD1-0FA3-42AB-BC04-B328511F6141}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4706FD1-0FA3-42AB-BC04-B328511F6141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D985068A-71B7-4749-9579-A543674277A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D985068A-71B7-4749-9579-A543674277A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D985068A-71B7-4749-9579-A543674277A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D985068A-71B7-4749-9579-A543674277A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +118,7 @@ Global
 		{2ED63215-EDBF-4030-9E7D-9BE1937A290E} = {EA87D09F-2D71-4743-9639-53C11CF702DB}
 		{06B43DA7-EB60-423C-A901-151EFE5F5C9F} = {233E0EE6-0B83-4A1C-A338-D9A55BF925D9}
 		{A4706FD1-0FA3-42AB-BC04-B328511F6141} = {233E0EE6-0B83-4A1C-A338-D9A55BF925D9}
+		{D985068A-71B7-4749-9579-A543674277A3} = {39CAB647-5934-42CF-A859-CFD741CB7A9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8E0C9216-8FEE-4A4E-8EED-AA359CC383B8}
