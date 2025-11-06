@@ -1,8 +1,13 @@
-﻿using MessageLogger;
+﻿using LLM.ToolCalling;
+using MCP.ServerLibrary;
+using MCP.ToolProviders;
+using MessageLogger;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PlaygroundConsole;
+using PlaygroundConsole.ChatClient;
+using PlaygroundConsole.ToolCallerTests;
 
 var builder = Host.CreateApplicationBuilder();
 
@@ -19,9 +24,21 @@ builder.Services.AddLogging(builder =>
     });
 });
 
-builder.Services.AddSingleton<LLMProviderTests>();
+
+builder.Services.AddToolCaller();
+builder.Services.AddSingleton<ToolCallerTest>();
+
+builder.Services.AddMcpServer(options =>
+{
+    options.ProtocolVersion = "2025-06-18";
+    options.Version = "1.0.0";
+    options.Name = "simple mcp";
+});
+
+
+builder.Services.AddToolProviders();
+builder.Services.AddSingleton<ChatClient>();
 
 IHost app = builder.Build();
-
-LLMProviderTests test = app.Services.GetRequiredService<LLMProviderTests>();
+ChatClient test = app.Services.GetRequiredService<ChatClient>();
 await test.StartAsync();

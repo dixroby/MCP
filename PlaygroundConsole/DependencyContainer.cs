@@ -1,10 +1,5 @@
 ﻿using LLM.Providers;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlaygroundConsole
 {
@@ -13,18 +8,18 @@ namespace PlaygroundConsole
         public static IServiceCollection AddGroqProvider(
             this IServiceCollection services)
         {
-            services.AddOpenAiProvider(options => 
+            services.AddOpenAiProvider(options =>
                 {
                     options.BaseUrl = "https://api.groq.com/";
                     options.RelativeEndpoint = "openai/v1/chat/completions";
-                    options.Model = "your model";
+                    options.Model = "moonshotai/kimi-k2-instruct-0905";
                     options.TimeOut = TimeSpan.FromMinutes(5);
 
                     options.AuthenticationHeaderName = "Authorization";
-                    options.AuthenticationHeaderValue = "Bearer your token";
+                    options.AuthenticationHeaderValue = "Bearer API_KEY";
                 });
 
-                return services;
+            return services;
         }
     }
 

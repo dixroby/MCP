@@ -1,4 +1,6 @@
-﻿using LLM.Abstractions.LLMProviderOptions;
+﻿using LLM.Abstractions.Extensions;
+using LLM.Abstractions.LLMProviderOptions;
+using LLM.Abstractions.Models;
 using LLM.Abstractions.Resources;
 using LLM.Providers.BaseProvider;
 using Microsoft.Extensions.Logging;
@@ -16,7 +18,8 @@ namespace LLM.Providers.OpenAi
     {
 
         // CONSTRUIR EL CUERPO DE LA WEA, con el contexto
-        protected override StringContent BuildRequestBody(IEnumerable<JsonElement> conversationHistory)
+        protected override StringContent BuildRequestBody(IEnumerable<JsonElement> conversationHistory,
+                                                          IEnumerable<Tool> tools)
         {
             // esto nos lo da la docu del proveedor, lo que quiere que le envieemos
             Dictionary<string, object> requestBody = new Dictionary<string, object>()
@@ -29,6 +32,13 @@ namespace LLM.Providers.OpenAi
                 ["max_completion_tokens"] = 4096
             };
 
+            if (tools != null && tools.Any())
+            {
+                requestBody["tools"] = ConvertToolsToFunctions(tools);
+                // le damos la responsabilidad de ejecución a la llm para que ejecute la herramienta
+                requestBody["tool_choice"] = "auto";
+            }
+
             string json = JsonSerializer.Serialize(requestBody, JsonOptions);
 
             return new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -36,7 +46,7 @@ namespace LLM.Providers.OpenAi
 
         protected override Result<JsonElement> ProcessResponse(string responseContent)
         {
-            OpenAIResponse openAIResponse = 
+            OpenAIResponse openAIResponse =
                 JsonSerializer.Deserialize<OpenAIResponse>(responseContent);
 
             return GetResponseMessage(openAIResponse);
@@ -46,15 +56,15 @@ namespace LLM.Providers.OpenAi
         {
             // agreggar header
             client.DefaultRequestHeaders.Add(
-                lLMProviderOptions.AuthenticationHeaderName, 
+                lLMProviderOptions.AuthenticationHeaderName,
                 lLMProviderOptions.AuthenticationHeaderValue);
         }
-        
+
         private static Result<JsonElement> GetResponseMessage(OpenAIResponse response)
         {
             Result<JsonElement> result;
 
-            if(response.Choiches?.Length > 0)
+            if (response.Choiches?.Length > 0)
             {
                 JsonElement message = response.Choiches[0].Message;
                 result = Result<JsonElement>.Ok(message);
@@ -67,5 +77,17 @@ namespace LLM.Providers.OpenAi
 
             return result;
         }
+
+        public override JsonElement CreateUserMessage(string message)
+        =>
+            JsonSerializer.SerializeToElement(new
+            {
+                role = "user",
+                content = message
+            });
+
+        public override JsonElement CreateToolCallResultMessage(string callId, string functionName, string toolCallResult)
+        =>
+            new OpenAIToolCallResult("tool", callId, toolCallResult).ToJsonElement();
     }
 }

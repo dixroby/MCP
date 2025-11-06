@@ -14,6 +14,10 @@
   <ItemGroup>
     <ProjectReference Include="..\LLM.Abstractions\LLM.Abstractions.csproj" />
     <ProjectReference Include="..\LLM.Providers\LLM.Providers.csproj" />
+    <ProjectReference Include="..\LLM.ToolCalling\LLM.ToolCalling.csproj" />
+    <ProjectReference Include="..\MCP.Abstractions\MCP.Abstractions.csproj" />
+    <ProjectReference Include="..\MCP.ServerLibrary\MCP.ServerLibrary.csproj" />
+    <ProjectReference Include="..\MCP.ToolProviders\MCP.ToolProviders.csproj" />
     <ProjectReference Include="..\MessageLogger\MessageLogger.csproj" />
   </ItemGroup>
 

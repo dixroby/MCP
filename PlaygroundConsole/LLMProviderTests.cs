@@ -1,6 +1,5 @@
 ﻿using LLM.Abstractions.Extensions;
 using LLM.Abstractions.Interfaces;
-using LLM.Abstractions.Models;
 using Results;
 using Results.Extensions;
 using System.Text.Json;
@@ -26,7 +25,7 @@ namespace PlaygroundConsole
                 if (userPromp != "quit")
                 {
                     conversationHistory
-                        .Add(new ChatMessage("user", userPromp).ToJsonElement());
+                        .Add(provider.CreateUserMessage(userPromp).ToJsonElement());
 
                     Result<JsonElement> callResult =
                         await

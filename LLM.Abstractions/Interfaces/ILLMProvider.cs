@@ -1,4 +1,5 @@
-﻿using Results;
+﻿using LLM.Abstractions.Models;
+using Results;
 using System.Text.Json;
 
 namespace LLM.Abstractions.Interfaces
@@ -13,7 +14,11 @@ namespace LLM.Abstractions.Interfaces
         // esto es el contexo del LLM, cuando preguntamos por el chatgpt, todo ese chorizo se va al llm, regresa, todo el chorizo de info se va al llm, cuando la conversación crece mucho
         // se vuelve lento
 
-        Task<Result<JsonElement>> SendRequestAsync(IEnumerable<JsonElement> conversationHistory);
-        // Quien descubrió america, también hizo esto?
+        JsonElement CreateUserMessage(string mensaje);
+
+        JsonElement CreateToolCallResultMessage(string callId, string functionName, string toolCallResult);
+
+        Task<Result<JsonElement>> SendRequestAsync(IEnumerable<JsonElement> conversationHistory,
+                                                   IEnumerable<Tool> tools = null);
     }
 }

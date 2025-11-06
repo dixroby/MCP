@@ -1,5 +1,6 @@
 ﻿using LLM.Abstractions.Interfaces;
 using LLM.Abstractions.LLMProviderOptions;
+using LLM.Abstractions.Models;
 using LLM.Abstractions.Resources;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -42,12 +43,12 @@ namespace LLM.Providers.BaseProvider
         public string ModelName => lLMProviderOptions.Model;
 
         // el conversationHistory es el contexto de la charla.
-        public async Task<Result<JsonElement>> SendRequestAsync(IEnumerable<JsonElement> conversationHistory)
+        public async Task<Result<JsonElement>> SendRequestAsync(IEnumerable<JsonElement> conversationHistory, IEnumerable<Tool> tools)
         {
             Result<JsonElement> result;
             try
             {
-                StringContent content = BuildRequestBody(conversationHistory); // lo tiene que implementar la clase concreta.
+                StringContent content = BuildRequestBody(conversationHistory, tools); // lo tiene que implementar la clase concreta.
 
                 using CancellationTokenSource cts =
                     new CancellationTokenSource(Client.Timeout);
@@ -55,19 +56,22 @@ namespace LLM.Providers.BaseProvider
                 Logger.LogInformation("Sending request to '{model}'", lLMProviderOptions.Model);
 
                 // respuesta del llm con un post
-                HttpResponseMessage response = await Client.PostAsync(
-                    lLMProviderOptions.RelativeEndpoint, 
-                    content, cts.Token);
+                HttpResponseMessage response = 
+                    await 
+                    Client
+                    .PostAsync(lLMProviderOptions.RelativeEndpoint,
+                               content,
+                               cts.Token);
 
                 // ¿Qué nos respondió el LLM?
                 string responseContent = await response.Content.ReadAsStringAsync(cts.Token);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Logger.LogInformation(
-                        "Response received from model '{model}': \n {response}",
-                        lLMProviderOptions.Model,
-                        responseContent);
+                    Logger
+                        .LogInformation("Response received from model '{model}': \n {response}",
+                                        lLMProviderOptions.Model,
+                                        responseContent);
 
                     return ProcessResponse(responseContent);
                 }
@@ -88,12 +92,12 @@ namespace LLM.Providers.BaseProvider
             return result;
         }
 
-        protected abstract StringContent BuildRequestBody(IEnumerable<JsonElement> conversationHistory);
+        protected abstract StringContent BuildRequestBody(IEnumerable<JsonElement> conversationHistory,
+                                                          IEnumerable<Tool> tools = null);
 
         // un método para que proceses la respuesta y me des el resultado
-        protected abstract Result<JsonElement> ProcessResponse(
-            string responseContent); 
-
+        protected abstract Result<JsonElement> ProcessResponse(string responseContent); 
+        
         protected string GetErrorMessage(Exception ex) => ex switch
         {
             TaskCanceledException tcEx when
@@ -113,5 +117,21 @@ namespace LLM.Providers.BaseProvider
         // en los headers con ollama no son necesarios, por eso es virtual
         protected virtual void ConfigureHeader(HttpClient client) { }
 
+        public abstract JsonElement CreateUserMessage(string mensaje);
+        public abstract JsonElement CreateToolCallResultMessage(string callId, string functionName, string toolCallResult);
+
+        protected static object[] ConvertToolsToFunctions(IEnumerable<Tool> tools) 
+        =>
+            [.. tools?.Select(t => new {
+
+                type = "function",
+                function = new {
+                    name = t.Name,
+                    description = t.Description,
+                    parameters = t.InputSchema,
+                }
+
+
+            })];
     }
 }
