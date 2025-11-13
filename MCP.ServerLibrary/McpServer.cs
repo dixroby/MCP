@@ -1,4 +1,5 @@
-﻿using MCP.Abstractions.Interface;
+﻿using MCP.Abstractions.Constants;
+using MCP.Abstractions.Interface;
 using MCP.Abstractions.Messages;
 using MCP.Abstractions.Models;
 using MCP.ServerLibrary.Options;
@@ -14,8 +15,8 @@ namespace MCP.ServerLibrary
     {
         private readonly static JsonSerializerOptions s_jsonOptions = new()
         {
-         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-         WriteIndented = false,
+             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+             WriteIndented = false,
         };
         public async Task<McpResponseMessage> HandleMessageAsync(McpRequestMessage message)
         {
@@ -23,10 +24,10 @@ namespace MCP.ServerLibrary
             {
                 return message.Method switch
                 {
-                    "initialize" => HandleInitialize(message),
-                    "notification/initialize" => null,
-                    "tool/list" => await HandleToolsListAsync(message),
-                    "tool/call" => await HandleToolsCallAsync(message),
+                    McpCommands.Initialize => HandleInitialize(message),
+                    McpCommands.Notification_Initialized => null,
+                    McpCommands.Tools_List => await HandleToolsListAsync(message),
+                    McpCommands.Tools_Call => await HandleToolsCallAsync(message),
                     _ => McpResponseMessage.CreateErrorResponse(message.Id, -32601, "Method not found")
 
                 };
@@ -76,10 +77,13 @@ namespace MCP.ServerLibrary
         private async Task<McpResponseMessage> HandleToolsListAsync(McpRequestMessage message)
         {
             IEnumerable<Task<McpTool>> getToolTasks =
-                providers.Select(p => p.GetMcpToolAsync()).Where(tool => tool != null);
+                providers
+                .Select(p => p.GetMcpToolAsync())
+                .Where(tool => tool != null);
 
-            McpTool[] tools = [
-                .. (await Task.WhenAll(getToolTasks))
+            McpTool[] tools = 
+                [
+                    ..(await Task.WhenAll(getToolTasks))
                 ];
 
             return new McpResponseMessage
@@ -107,17 +111,23 @@ namespace MCP.ServerLibrary
                         JsonSerializer
                         .Serialize(message.Params, s_jsonOptions);
                     McpCallToolParams toolParams = 
-                        JsonSerializer.Deserialize<McpCallToolParams>(paramsJson, s_jsonOptions);
+                        JsonSerializer
+                        .Deserialize<McpCallToolParams>(paramsJson, s_jsonOptions);
 
                     IMcpToolProvider toolProvider = null;
                     if (toolParams != null)
                     {
-                        toolProvider = providers.FirstOrDefault(p => p.ToolName.Equals(toolParams.Name));
+                        toolProvider = 
+                            providers
+                            .FirstOrDefault(p => p.ToolName == (toolParams.Name));
                     }
 
                     if(toolProvider != null)
                     {
-                        var toolResult = await toolProvider.HandleToolCallAsync(toolParams.Arguments);
+                        var toolResult = 
+                            await 
+                            toolProvider
+                            .HandleToolCallAsync(toolParams.Arguments);
 
                         mcpResponseMessage = new()
                         {
@@ -127,17 +137,25 @@ namespace MCP.ServerLibrary
                     }
                     else
                     {
-                        mcpResponseMessage = McpResponseMessage.CreateErrorResponse(message.Id,
-                            -32602, "Tool not found");
+                        mcpResponseMessage = 
+                            McpResponseMessage
+                            .CreateErrorResponse(message.Id,
+                                                 -32602,
+                                                 "Tool not found");
                     }
                     return mcpResponseMessage;
                 }
                 catch (Exception ex)
                 {
-                    logger.LogInformation("Error in HandleToolCallAsync: {message}", ex.Message);
+                    logger
+                        .LogInformation("Error in HandleToolCallAsync: {message}", ex.Message);
                     
-                    mcpResponseMessage = McpResponseMessage.CreateErrorResponse(message.Id,
-                            -32603, "Internal error : {message}", ex.Message);
+                    mcpResponseMessage = 
+                        McpResponseMessage
+                        .CreateErrorResponse(message.Id,
+                                             -32603,
+                                             "Internal error : {message}",
+                                             ex.Message);
                     return mcpResponseMessage;
                 }
             }

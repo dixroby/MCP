@@ -1,4 +1,5 @@
 ﻿using MCP.Abstractions.Interface;
+using MCP.ToolProviders.Calculator;
 using MCP.ToolProviders.Time;
 using MCP.ToolProviders.Wheather;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace MCP.ToolProviders;
         {
             services.AddSingleton<IMcpToolProvider, TimeToolProvider>();
             services.AddSingleton<IMcpToolProvider, WeatherToolProvider>();
+            services.AddSingleton<IMcpToolProvider, CalculatorToolProvider>();
 
             return services;
         }

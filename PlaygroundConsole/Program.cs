@@ -26,17 +26,18 @@ builder.Services.AddLogging(builder =>
 
 
 builder.Services.AddToolCaller();
-builder.Services.AddSingleton<ToolCallerTest>();
+
 
 builder.Services.AddMcpServer(options =>
 {
     options.ProtocolVersion = "2025-06-18";
     options.Version = "1.0.0";
-    options.Name = "simple mcp";
+    options.Name = "simple mcp server";
 });
 
 
 builder.Services.AddToolProviders();
+builder.Services.AddSingleton<McpClient>();
 builder.Services.AddSingleton<ChatClient>();
 
 IHost app = builder.Build();
