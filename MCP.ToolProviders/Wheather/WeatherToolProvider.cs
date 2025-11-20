@@ -26,7 +26,7 @@ internal class WeatherToolProvider : IMcpToolProvider
         }
     };
 
-    public string ToolName = s_weatherTool.Name;
+    public string ToolName => s_weatherTool.Name;
 
     public Func<JsonElement, Task<McpToolResult>> HandleToolCallAsync => args =>
     {
@@ -55,8 +55,6 @@ internal class WeatherToolProvider : IMcpToolProvider
 
         return Task.FromResult(result);
     };
-
-    string IMcpToolProvider.ToolName => throw new NotImplementedException();
 
     public Task<McpTool> GetMcpToolAsync() =>
         Task.FromResult(s_weatherTool);

@@ -119,7 +119,7 @@ namespace MCP.ServerLibrary
                     {
                         toolProvider = 
                             providers
-                            .FirstOrDefault(p => p.ToolName == (toolParams.Name));
+                            .FirstOrDefault(p => p.ToolName.Equals(toolParams.Name));
                     }
 
                     if(toolProvider != null)
@@ -154,8 +154,7 @@ namespace MCP.ServerLibrary
                         McpResponseMessage
                         .CreateErrorResponse(message.Id,
                                              -32603,
-                                             "Internal error : {message}",
-                                             ex.Message);
+                                             $"Internal error : {ex.Message}");
                     return mcpResponseMessage;
                 }
             }

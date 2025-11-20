@@ -7,7 +7,7 @@ namespace MCP.Abstractions.Models
         [JsonPropertyName("type")]
         public string Type { get; set; } = "text";
 
-        [JsonPropertyName("type")]
+        [JsonPropertyName("text")]
         public string Text { get; set; }
     }
 }

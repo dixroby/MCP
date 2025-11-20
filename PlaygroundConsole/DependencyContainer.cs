@@ -16,7 +16,7 @@ namespace PlaygroundConsole
                     options.TimeOut = TimeSpan.FromMinutes(5);
 
                     options.AuthenticationHeaderName = "Authorization";
-                    options.AuthenticationHeaderValue = "Bearer your_token";
+                    options.AuthenticationHeaderValue = "Bearer API_KEY";
                 });
 
             return services;

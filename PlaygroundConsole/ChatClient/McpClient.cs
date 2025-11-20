@@ -118,7 +118,8 @@ namespace PlaygroundConsole.ChatClient
                     .GetProperty("Content");
 
                 object[] content =
-                    propertyInfo?.GetValue(responseMessage) as object[];
+                    propertyInfo?
+                    .GetValue(responseMessage.Result) as object[];
 
                 if (content[0] is TextContent textContent) 
                 {
